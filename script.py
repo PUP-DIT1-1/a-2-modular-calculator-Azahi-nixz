@@ -11,7 +11,7 @@ def multiply(a, b):
 
 def divide(a, b):
     if b == 0:
-        return "Error: Cannot divide by zero."
+        raise ZeroDivisionError( "Error: Cannot divide by zero.")
     return a / b
 
 
@@ -35,7 +35,7 @@ ENTER OPERATION:
 """)
     while True:
         try:
-            choice = int(input("Choose (1-4): "))
+            choice = int(input("Choose: "))
             if 1 <= choice <= 4:
                 return choice
             else:
@@ -50,21 +50,26 @@ def main():
         a, b = get_numbers()
         choice = get_operation()
 
-        match choice:
-            case 1:
-                result = add(a, b)
-                operationUsed = "Sum"
-            case 2:
-                result = subtract(a, b)
-                operationUsed = "Difference"
-            case 3:
-                result = multiply(a, b)
-                operationUsed = "Product"
-            case 4:
+        if choice == 1:
+            result = add(a, b)
+            operationUsed = "Sum"
+        elif choice == 2:
+            result = subtract(a, b)
+            operationUsed = "Difference"
+        elif choice == 3:
+            result = multiply(a, b)
+            operationUsed = "Product"
+        elif choice == 4:
+            try:
                 result = divide(a, b)
                 operationUsed = "Quotient"
+            except ZeroDivisionError as e:
+                print(e)
 
-        print(operationUsed + " is", result)
+        if result.is_integer():
+            print(f"The {operationUsed} is {result:g}")
+        else:
+            print(f"The {operationUsed} is {result:.2f}")
 
         again = input("\nDo you want to calculate again? (y/n): ").lower()
         if again != 'y':
@@ -74,3 +79,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
